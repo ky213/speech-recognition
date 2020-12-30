@@ -9,7 +9,7 @@ const WordsSlide = ({ setCurrentWord, setRecognitionResult }) => {
       text: 'مرحبا',
     },
     {
-      text: 'شجرة',
+      text: 'شجره',
     },
     {
       text: 'الماء',
@@ -18,7 +18,7 @@ const WordsSlide = ({ setCurrentWord, setRecognitionResult }) => {
       text: 'القمر',
     },
     {
-      text: 'سيارة',
+      text: 'سياره',
     },
     {
       text: 'هاتف',

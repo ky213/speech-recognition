@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import { Row, Col, CardBody } from 'reactstrap'
 
-import { loader } from './Loading.css'
+import './Loading.css'
 
 const Loading = ({ small }) => {
   return (
@@ -11,7 +11,7 @@ const Loading = ({ small }) => {
         <Row className={classNames({ 'p-0': small, 'm-0': small })}>
           <Col className={classNames({ 'p-0': small, 'm-0': small })}>
             <div
-              className={loader}
+              className="loader"
               style={small && { width: '20px', height: '20px' }}
             ></div>
           </Col>

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useReactMediaRecorder } from 'react-media-recorder'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faMicrophone,
+  faStop,
+  faCheck,
+  faRedo,
+} from '@fortawesome/free-solid-svg-icons'
 import { recognizeSpeech } from './services'
 import WordsSlide from './WordsSlide'
 import { Container, Row, Col, Alert, Button } from 'reactstrap'
@@ -36,7 +42,7 @@ const SpeechRecognition = () => {
       setRecognitionResult(null)
 
       const result = await recognizeSpeech(data, currentWord)
-
+      console.log(result)
       setRecognitionResult(result)
       setRecognizing(false)
     } catch (error) {
@@ -65,7 +71,7 @@ const SpeechRecognition = () => {
           {errorMessage && (
             <Alert
               color="danger"
-              isOpen={errorMessage && errorMessage}
+              isOpen={errorMessage !== null}
               toggle={() => setErrorMessage(null)}
             >
               Error: {errorMessage}
@@ -89,13 +95,13 @@ const SpeechRecognition = () => {
             {recognitionResult?.found &&
               recognitionResult?.transcription === currentWord && (
                 <span className="text-info">
-                  <i className={`fa fa-fw fa-check`}></i> أحسنت
+                  <FontAwesomeIcon icon={faCheck} /> أحسنت
                 </span>
               )}
             {recognitionResult &&
               recognitionResult.transcription !== currentWord && (
                 <span className="text-danger">
-                  <i className={`fa fa-fw fa-refresh`}></i> حاول مرة أخرى
+                  <FontAwesomeIcon icon={faRedo} /> حاول مرة أخرى
                 </span>
               )}
           </h3>
@@ -122,11 +128,7 @@ const SpeechRecognition = () => {
                   <Loading small />
                 ) : (
                   <>
-                    <i
-                      className={`fa fa-fw fa-${
-                        recording ? 'stop' : 'microphone'
-                      }`}
-                    ></i>
+                    <FontAwesomeIcon icon={recording ? faStop : faMicrophone} />
                     <span>
                       {recording ? ' Stop Recording' : ' Start Recording'}
                     </span>
