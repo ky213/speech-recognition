@@ -5,12 +5,11 @@ export async function recognizeSpeech(audioData, currentWord) {
     body: JSON.stringify({ audioStream: audioData, textToCheck: currentWord }),
   }
 
-  return fetch(
+  const response  = await fetch(
     `https://api.staging.lxpia.com/api/users/speechToText`,
     requestOptions
   )
-    .then(response => response)
-    .then(data => {
-      return data
-    })
+  const data = await response.json()
+  return data
+    
 }
