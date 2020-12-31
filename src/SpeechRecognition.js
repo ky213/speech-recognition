@@ -6,17 +6,20 @@ import {
   faStop,
   faCheck,
   faRedo,
+  faPhoneVolume,
+  faVolumeUp,
 } from '@fortawesome/free-solid-svg-icons'
 import { recognizeSpeech } from './services'
-import WordsSlide from './WordsSlide'
-import { Container, Row, Col, Alert, Button } from 'reactstrap'
+import { Container, Row, Col, Alert, Button, Card } from 'reactstrap'
 import Loading from './Loading'
+
+const currentWord = 'أَحْمَد مُعَلِّمٌ'
 
 const SpeechRecognition = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [recognizing, setRecognizing] = useState(false)
   const [recognitionResult, setRecognitionResult] = useState(null)
-  const [currentWord, setCurrentWord] = useState('')
+  // const [currentWord, setCurrentWord] = useState('')
   const {
     status,
     startRecording,
@@ -79,75 +82,59 @@ const SpeechRecognition = () => {
           )}
         </Col>
       </Row>
-      <Row>
-        <Col
-          className="h-50 my-4 position-relative"
-          style={{ height: '200px' }}
-        >
-          <WordsSlide
-            setCurrentWord={setCurrentWord}
-            setRecognitionResult={setRecognitionResult}
-          />
-          <h3
-            className="position-absolute text-center w-100 "
-            style={{ bottom: '30px', left: '0' }}
+      <Card className="p-4">
+        <Row>
+          <Col>
+            <h3 className="text-right">
+              {currentWord}{' '}
+              <FontAwesomeIcon icon={faVolumeUp} style={{ fontSize: '24px' }} />
+            </h3>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="text-center w-100">
+            <Button
+              color={`${recording ? 'danger' : 'primary'}`}
+              disabled={recognizing}
+              onClick={() => {
+                if (['idle', 'stopped'].includes(status)) startRecording()
+                else {
+                  stopRecording()
+                }
+              }}
+              style={{ width: '80px', height: '80px', fontSize: '32px' }}
+            >
+              {recognizing ? (
+                <Loading small />
+              ) : (
+                <FontAwesomeIcon icon={recording ? faStop : faMicrophone} />
+              )}
+            </Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col
+            className="h-50 my-4 position-relative"
+            style={{ height: '200px' }}
           >
-            {recognitionResult?.found &&
-              recognitionResult?.transcription === currentWord && (
-                <span className="text-info">
-                  <FontAwesomeIcon icon={faCheck} /> أحسنت
-                </span>
-              )}
-            {recognitionResult &&
-              recognitionResult.transcription !== currentWord && (
-                <span className="text-danger">
-                  <FontAwesomeIcon icon={faRedo} /> حاول مرة أخرى
-                </span>
-              )}
-          </h3>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Row>
-            <Col>
-              <Button
-                color={`${recording ? 'danger' : 'info'}`}
-                size="lg"
-                block
-                outline={!recording}
-                disabled={recognizing}
-                onClick={() => {
-                  if (['idle', 'stopped'].includes(status)) startRecording()
-                  else {
-                    stopRecording()
-                  }
-                }}
-              >
-                {recognizing ? (
-                  <Loading small />
-                ) : (
-                  <>
-                    <FontAwesomeIcon icon={recording ? faStop : faMicrophone} />
-                    <span>
-                      {recording ? ' Stop Recording' : ' Start Recording'}
-                    </span>
-                  </>
+            <h3 className="text-center text-success">أَحْمَد مُعَلِّمٌ</h3>
+            <h3 className="text-center w-100 ">
+              {recognitionResult?.found &&
+                recognitionResult?.transcription === currentWord && (
+                  <span className="text-info">
+                    <FontAwesomeIcon icon={faCheck} />
+                  </span>
                 )}
-              </Button>
-            </Col>
-            <Col>
-              <audio
-                src={mediaBlobUrl}
-                controls
-                autoplay
-                loop
-                style={{ maxHeight: '40px', width: '100%' }}
-              />
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+              {recognitionResult &&
+                recognitionResult.transcription !== currentWord && (
+                  <span className="text-danger">
+                    <FontAwesomeIcon icon={faRedo} />
+                  </span>
+                )}
+            </h3>
+          </Col>
+        </Row>
+      </Card>
     </Container>
   )
 }
