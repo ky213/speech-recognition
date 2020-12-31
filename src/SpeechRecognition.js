@@ -18,7 +18,7 @@ const currentWord = 'أَحْمَد مُعَلِّمٌ'
 const SpeechRecognition = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [recognizing, setRecognizing] = useState(false)
-  const [recognitionResult, setRecognitionResult] = useState(null)
+  const [recognitionResult, setRecognitionResult] = useState('')
   // const [currentWord, setCurrentWord] = useState('')
   const {
     status,
@@ -38,6 +38,8 @@ const SpeechRecognition = () => {
   useEffect(() => {
     if (recorderError) setErrorMessage(recorderError)
   }, [recorderError])
+
+  useEffect(() => {}, [recognitionResult])
 
   const getSpeechRecognition = async data => {
     try {
@@ -117,11 +119,19 @@ const SpeechRecognition = () => {
             className="h-50 my-4 position-relative"
             style={{ height: '200px' }}
           >
-            <h3 className="text-center text-success">أَحْمَد مُعَلِّمٌ</h3>
+            <h3
+              className={`text-center text-${
+                recognitionResult?.transcription === currentWord
+                  ? 'success'
+                  : 'danger'
+              }`}
+            >
+              {recognitionResult?.transcription}
+            </h3>
             <h3 className="text-center w-100 ">
               {recognitionResult?.found &&
                 recognitionResult?.transcription === currentWord && (
-                  <span className="text-info">
+                  <span className="text-success">
                     <FontAwesomeIcon icon={faCheck} />
                   </span>
                 )}
