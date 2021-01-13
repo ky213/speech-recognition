@@ -13,8 +13,6 @@ import { recognizeSpeech } from './services'
 import { Container, Row, Col, Alert, Button, Card } from 'reactstrap'
 import Loading from './Loading'
 
-const currentWord = 'أَحْمَد مُعَلِّمٌ'
-
 const SpeechRecognition = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [recognizing, setRecognizing] = useState(false)
@@ -46,7 +44,7 @@ const SpeechRecognition = () => {
       setRecognizing(true)
       setRecognitionResult(null)
 
-      const result = await recognizeSpeech(data, currentWord)
+      const result = await recognizeSpeech(data, window.comparisonWord)
       console.log(result)
       setRecognitionResult(result)
       setRecognizing(false)
@@ -87,8 +85,14 @@ const SpeechRecognition = () => {
       <Card className="p-4">
         <Row>
           <Col>
+            <audio src="/CORRECT.mp3" pl></audio>
+            <audio></audio>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <h3 className="text-right">
-              {currentWord}{' '}
+              <span id="word">{window.displayWord} </span>
               <FontAwesomeIcon icon={faVolumeUp} style={{ fontSize: '24px' }} />
             </h3>
           </Col>
@@ -119,26 +123,19 @@ const SpeechRecognition = () => {
             className="h-50 my-4 position-relative"
             style={{ height: '200px' }}
           >
-            <h3
-              className={`text-center text-${
-                recognitionResult?.transcription === currentWord
-                  ? 'success'
-                  : 'danger'
-              }`}
-            >
-              {recognitionResult?.transcription}
-            </h3>
             <h3 className="text-center w-100 ">
               {recognitionResult?.found &&
-                recognitionResult?.transcription === currentWord && (
+                recognitionResult?.transcription === window.comparisonWord && (
                   <span className="text-success">
                     <FontAwesomeIcon icon={faCheck} />
+                    <audio src="CORRECT1.mp3" autoPlay></audio>
                   </span>
                 )}
               {recognitionResult &&
-                recognitionResult.transcription !== currentWord && (
+                recognitionResult.transcription !== window.comparisonWord && (
                   <span className="text-danger">
                     <FontAwesomeIcon icon={faRedo} />
+                    <audio src="INCORRECT.mp3" autoPlay></audio>
                   </span>
                 )}
             </h3>
